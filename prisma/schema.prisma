@@ -60,10 +60,11 @@ model Role {
 model Product {
   id                   String                @id @default(uuid())
   name                 String
-  code                 String
+  code                 String?
   purchasePrice        Float
   salePrice            Float
   HistoryProductPrices HistoryProductPrice[]
+  ProductSale          ProductSale[]
 }
 
 model HistoryProductPrice {
@@ -76,10 +77,22 @@ model HistoryProductPrice {
 }
 
 model Sale {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  sale      Float
-  isOpen    Boolean  @default(false)
-  User      User?    @relation(fields: [userId], references: [id])
-  userId    String?
+  id          String        @id @default(uuid())
+  createdAt   DateTime      @default(now())
+  sale        Float
+  isOpen      Boolean       @default(false)
+  User        User?         @relation(fields: [userId], references: [id])
+  userId      String?
+  ProductSale ProductSale[]
+}
+
+model ProductSale {
+  productAmount Int
+  salePrice     Float
+  productId     String
+  saleId        String
+  Product       Product @relation(fields: [productId], references: [id])
+  Sale          Sale    @relation(fields: [saleId], references: [id])
+
+  @@id([productId, saleId])
 }
