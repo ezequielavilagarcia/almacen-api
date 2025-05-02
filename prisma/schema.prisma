@@ -19,12 +19,23 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String   /// @HideField({ output: true })
-  firstName String?
-  lastName  String?
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id              String         @id @default(uuid())
+  email           String         @unique
+  password        String /// @HideField({ output: true })
+  firstName       String?
+  lastName        String?
+  isActive        Boolean        @default(true)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  CompanyBranch   CompanyBranch? @relation(fields: [companyBranchId], references: [id])
+  companyBranchId String?
+}
+
+model CompanyBranch {
+  id          String  @id @default(uuid())
+  name        String?
+  address     String
+  email       String
+  phoneNumber Int?
+  Users       User[]
 }
