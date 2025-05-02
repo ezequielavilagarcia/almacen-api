@@ -32,10 +32,18 @@ model User {
 }
 
 model CompanyBranch {
-  id          String  @id @default(uuid())
+  id          String   @id @default(uuid())
   name        String?
   address     String
   email       String
   phoneNumber Int?
   Users       User[]
+  Company     Company? @relation(fields: [companyId], references: [id])
+  companyId   String?
+}
+
+model Company {
+  id       String          @id @default(uuid())
+  name     String
+  Branches CompanyBranch[]
 }
