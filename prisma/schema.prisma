@@ -55,3 +55,10 @@ model Role {
   role  String
   Users User[]
 }
+
+model Product {
+  id    String @id @default(uuid())
+  name  String
+  code  String
+  price Float
+}
