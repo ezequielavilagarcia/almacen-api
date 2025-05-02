@@ -65,6 +65,7 @@ model Product {
   salePrice            Float
   HistoryProductPrices HistoryProductPrice[]
   ProductSale          ProductSale[]
+  ProductBatches       ProductBatch[]
 }
 
 model HistoryProductPrice {
@@ -87,7 +88,7 @@ model Sale {
 }
 
 model ProductSale {
-  productAmount Int
+  productAmount Float
   salePrice     Float
   productId     String
   saleId        String
@@ -95,4 +96,14 @@ model ProductSale {
   Sale          Sale    @relation(fields: [saleId], references: [id])
 
   @@id([productId, saleId])
+}
+
+model ProductBatch {
+  id             String   @id @default(uuid())
+  originalAmount Float
+  currentAmount  Float
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  Product        Product  @relation(fields: [productId], references: [id])
+  productId      String
 }
