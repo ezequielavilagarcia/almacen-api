@@ -18,13 +18,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+/// Model representing a user in the system
 model User {
+  /// Unique identifier for the user
   id        String   @id @default(uuid())
+  /// User's email address (unique)
   email     String   @unique
-  password  String   /// @HideField({ output: true })
+  /// User's password (not shown in queries)
+  password  String   
+  /// User's first name
   firstName String?
+  /// User's last name
   lastName  String?
+  /// Indicates if the user is active
   isActive  Boolean  @default(true)
+  /// Date when the user was created
   createdAt DateTime @default(now())
+  /// Date when the user was last updated
   updatedAt DateTime @updatedAt
 }
