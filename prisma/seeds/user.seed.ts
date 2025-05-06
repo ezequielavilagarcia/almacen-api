@@ -1,7 +1,11 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Role } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
-export async function seedUsers(prisma: PrismaClient) {
+export async function seedUsers(
+  prisma: PrismaClient,
+  roles: { adminRole: Role; userRole: Role },
+  companyBranchId: string,
+) {
   console.log('🌱 Seeding users...');
 
   const salt = await bcrypt.genSalt();
@@ -18,6 +22,12 @@ export async function seedUsers(prisma: PrismaClient) {
       firstName: 'Admin',
       lastName: 'User',
       isActive: true,
+      Role: {
+        connect: { id: roles.adminRole.id },
+      },
+      CompanyBranch: {
+        connect: { id: companyBranchId },
+      },
     },
   });
 
@@ -31,10 +41,17 @@ export async function seedUsers(prisma: PrismaClient) {
       firstName: 'Regular',
       lastName: 'User',
       isActive: true,
+      Role: {
+        connect: { id: roles.userRole.id },
+      },
+      CompanyBranch: { connect: { id: companyBranchId } },
     },
   });
 
+  console.log(`✅ Created admin user with ID: ${admin.id}`);
   console.log(`✅ Created regular user with ID: ${user.id}`);
 
   console.log('✅ Users seeding completed');
+
+  return { admin, user };
 }

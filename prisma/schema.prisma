@@ -59,7 +59,7 @@ model Role {
 
 model Product {
   id                   String                @id @default(uuid())
-  name                 String
+  name                 String                @unique
   code                 String?
   purchasePrice        Float
   salePrice            Float
