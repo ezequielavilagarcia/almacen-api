@@ -19,62 +19,35 @@ datasource db {
 }
 
 model User {
-  id              String         @id @default(uuid())
-  email           String         @unique
-  password        String /// @HideField({ output: true })
-  firstName       String?
-  lastName        String?
-  isActive        Boolean        @default(true)
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-  CompanyBranch   CompanyBranch? @relation(fields: [companyBranchId], references: [id])
-  companyBranchId String?
-  Role            Role?          @relation(fields: [roleId], references: [id])
-  roleId          String?
-  Sales           Sale[]
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String /// @HideField({ output: true })
+  firstName String?
+  lastName  String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Sales     Sale[]
+  Company   Company? @relation(fields: [companyId], references: [id])
+  companyId String?
 }
 
-model CompanyBranch {
-  id          String   @id @default(uuid())
-  name        String?
+model Company {
+  id          String @id @default(uuid())
+  name        String
   address     String
   email       String
   phoneNumber Int?
   Users       User[]
-  Company     Company? @relation(fields: [companyId], references: [id])
-  companyId   String?
-}
-
-model Company {
-  id       String          @id @default(uuid())
-  name     String
-  Branches CompanyBranch[]
-}
-
-model Role {
-  id    String @id @default(uuid())
-  role  String
-  Users User[]
 }
 
 model Product {
-  id                   String                @id @default(uuid())
-  name                 String                @unique
-  code                 String?
-  purchasePrice        Float
-  salePrice            Float
-  HistoryProductPrices HistoryProductPrice[]
-  ProductSale          ProductSale[]
-  ProductBatches       ProductBatch[]
-}
-
-model HistoryProductPrice {
-  id            String   @id @default(uuid())
+  id            String        @id @default(uuid())
+  name          String        @unique
+  code          String?
   purchasePrice Float
   salePrice     Float
-  createdAt     DateTime @default(now())
-  Product       Product  @relation(fields: [productId], references: [id])
-  productId     String
+  ProductSale   ProductSale[]
 }
 
 model Sale {
@@ -96,14 +69,4 @@ model ProductSale {
   Sale          Sale    @relation(fields: [saleId], references: [id])
 
   @@id([productId, saleId])
-}
-
-model ProductBatch {
-  id             String   @id @default(uuid())
-  originalAmount Float
-  currentAmount  Float
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  Product        Product  @relation(fields: [productId], references: [id])
-  productId      String
 }
