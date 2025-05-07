@@ -124,6 +124,7 @@ model ProductSale {
   @@id([productId, saleId])
 }
 
+/// Model representing a category in the system
 model Category {
   /// Unique identifier for the category
   id        String  @id @default(uuid())
