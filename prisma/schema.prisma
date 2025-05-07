@@ -49,10 +49,10 @@ model Company {
   id           String         @id @default(uuid())
   /// Company's name
   name         String
-  /// Company's address (unique)
-  address      String         @unique
-  /// Company's email address (unique)
-  email        String         @unique
+  /// Company's address
+  address      String
+  /// Company's email address (can be null)
+  email        String?
   /// Company's phone number (can be null)
   phoneNumber  Int?
   /// Company's users
@@ -100,8 +100,6 @@ model Sale {
   createdAt   DateTime      @default(now())
   /// Total sale
   total       Float
-  /// Indicates if the sale is open
-  isOpen      Boolean       @default(false)
   /// Sale's user
   User        User          @relation(fields: [userId], references: [id])
   userId      String
