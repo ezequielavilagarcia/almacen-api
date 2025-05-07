@@ -92,6 +92,7 @@ model ProductPrice {
   companyId     String
 }
 
+/// Model representing a sale in the system
 model Sale {
   /// Unique identifier for the sale
   id          String        @id @default(uuid())
