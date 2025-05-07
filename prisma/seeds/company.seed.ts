@@ -10,6 +10,8 @@ export async function seedCompanies(prisma: PrismaClient) {
   const exampleCompany = await prisma.company.create({
     data: {
       name: 'Example',
+      address: '123 street',
+      email: 'company@example.com',
     },
   });
 

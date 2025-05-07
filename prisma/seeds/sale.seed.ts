@@ -18,7 +18,7 @@ export async function seedSales(
   const exampleSale = await prisma.sale.create({
     data: {
       // Sum of the amount of all products sold and their selling price
-      sale: totalSale,
+      total: totalSale,
       User: {
         connect: {
           id: userId,
@@ -26,8 +26,8 @@ export async function seedSales(
       },
       ProductSale: {
         create: {
-          productAmount,
-          salePrice: productSalePrice,
+          amount: productAmount,
+          price: productSalePrice,
           Product: { connect: { id: productId } },
         },
       },

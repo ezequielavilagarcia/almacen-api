@@ -1,11 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 import { seedUsers } from './user.seed';
-import { seedCompanyBranches } from './company-branch.seed';
-import { seedRoles } from './role.seed';
 import { seedCompanies } from './company.seed';
 import { seedProducts } from './product.seed';
 import { seedSales } from './sale.seed';
-import { seedProductBatches } from './product-batch.seed';
+import { seedProductPrices } from './product-price.seed';
+import { seedCategories } from './category.seed';
 
 const prisma = new PrismaClient();
 
@@ -13,13 +12,12 @@ async function main() {
   console.log('🌱 Starting database seeding...');
 
   // Run seeds in sequence
-  const companyBranch = await seedCompanyBranches(prisma);
-  const roles = await seedRoles(prisma);
-  const users = await seedUsers(prisma, roles, companyBranch.id);
-  await seedCompanies(prisma);
+  const company = await seedCompanies(prisma);
+  const users = await seedUsers(prisma, company.id);
   const product = await seedProducts(prisma);
-  await seedSales(prisma, users.admin.id, product.id, 3, product.salePrice);
-  await seedProductBatches(prisma, product.id);
+  await seedCategories(prisma, product.id);
+  const productPrice = await seedProductPrices(prisma, product.id, company.id);
+  await seedSales(prisma, users.id, product.id, 3, productPrice.salePrice);
 
   console.log('✅ Database seeding completed successfully');
 }

@@ -18,55 +18,118 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+/// Model representing a user in the system
 model User {
+  /// Unique identifier for the user
   id        String   @id @default(uuid())
+  /// User's email address (unique)
   email     String   @unique
-  password  String /// @HideField({ output: true })
+  /// User's password (not shown in queries)
+  password  String
+  /// User's first name (can be null)
   firstName String?
+  /// User's last name (can be null)
   lastName  String?
+  /// Indicates if the user is active
   isActive  Boolean  @default(true)
+  /// Date when the user was created
   createdAt DateTime @default(now())
+  /// Date when the user was last updated
   updatedAt DateTime @updatedAt
+  /// User's sales
   Sales     Sale[]
-  Company   Company? @relation(fields: [companyId], references: [id])
-  companyId String?
+  /// User's company
+  Company   Company  @relation(fields: [companyId], references: [id])
+  companyId String
 }
 
+/// Model representing a company in the system
 model Company {
-  id          String @id @default(uuid())
-  name        String
-  address     String
-  email       String
-  phoneNumber Int?
-  Users       User[]
+  /// Unique identifier for the company
+  id           String         @id @default(uuid())
+  /// Company's name
+  name         String
+  /// Company's address (unique)
+  address      String         @unique
+  /// Company's email address (unique)
+  email        String         @unique
+  /// Company's phone number (can be null)
+  phoneNumber  Int?
+  /// Company's users
+  Users        User[]
+  /// Price for each product 
+  ProductPrice ProductPrice[]
 }
 
+/// Model representing a product in the system
 model Product {
-  id            String        @id @default(uuid())
-  name          String        @unique
-  code          String?
+  /// Unique identifier for the product
+  id           String        @id @default(uuid())
+  /// Product's name (unique)
+  name         String        @unique
+  /// Product's code (can be null)
+  code         String?
+  /// Join table between product and sale
+  ProductSale  ProductSale[]
+  /// Product's price
+  ProductPrice ProductPrice?
+  Category     Category?
+}
+
+/// Model representing a product price in the system
+model ProductPrice {
+  /// Unique identifier for the product price
+  id            String  @id @default(uuid())
+  /// Product's purchase price
   purchasePrice Float
+  /// Product's sale price
   salePrice     Float
-  ProductSale   ProductSale[]
+  /// Product relation
+  Product       Product @relation(fields: [productId], references: [id])
+  productId     String  @unique
+  /// Product price company
+  Company       Company @relation(fields: [companyId], references: [id])
+  companyId     String
 }
 
 model Sale {
+  /// Unique identifier for the sale
   id          String        @id @default(uuid())
+  /// Date when the sale was created
   createdAt   DateTime      @default(now())
-  sale        Float
+  /// Total sale
+  total       Float
+  /// Indicates if the sale is open
   isOpen      Boolean       @default(false)
-  User        User?         @relation(fields: [userId], references: [id])
-  userId      String?
+  /// Sale's user
+  User        User          @relation(fields: [userId], references: [id])
+  userId      String
+  /// Join table between product and sale
   ProductSale ProductSale[]
 }
 
+/// Model representing a product sale in the system
 model ProductSale {
-  productAmount Float
-  salePrice     Float
-  productId     String
-  saleId        String
-  Product       Product @relation(fields: [productId], references: [id])
-  Sale          Sale    @relation(fields: [saleId], references: [id])
+  /// Product's total amount
+  amount    Float
+  /// Product's price
+  price     Float
+  /// Product relation
+  productId String
+  /// Sale relation
+  saleId    String
+  Product   Product @relation(fields: [productId], references: [id])
+  Sale      Sale    @relation(fields: [saleId], references: [id])
 
   @@id([productId, saleId])
+}
+
+model Category {
+  /// Unique identifier for the category
+  id        String  @id @default(uuid())
+  /// Category's description
+  category  String
+  /// Category's product
+  Product   Product @relation(fields: [productId], references: [id])
+  productId String  @unique
 }

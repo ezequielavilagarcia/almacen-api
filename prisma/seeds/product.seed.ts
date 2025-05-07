@@ -10,16 +10,7 @@ export async function seedProducts(prisma: PrismaClient) {
   const exampleProduct = await prisma.product.create({
     data: {
       name: 'Example',
-      purchasePrice: 10,
-      salePrice: 20,
       code: 'E001',
-      // Create with the first product prices
-      HistoryProductPrices: {
-        create: {
-          purchasePrice: 10,
-          salePrice: 20,
-        },
-      },
     },
   });
 
