@@ -13,6 +13,10 @@ export class CreateUserInput {
   @MinLength(6)
   password: string;
 
+  @Field()
+  @IsNotEmpty()
+  companyId: string;
+
   @Field({ nullable: true })
   @IsOptional()
   firstName?: string;

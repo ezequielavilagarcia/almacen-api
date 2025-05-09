@@ -10,16 +10,24 @@ export class UserService {
   findByEmail(email: string): Promise<User | null> {
     return this.prisma.user.findUnique({
       where: { email },
+      include: { Company: true },
     });
   }
 
   findById(id: string): Promise<User | null> {
     return this.prisma.user.findUnique({
       where: { id },
+      include: { Company: true },
     });
   }
 
-  async create(data: { email: string; password: string; firstName?: string; lastName?: string }) {
+  async create(data: {
+    email: string;
+    password: string;
+    firstName?: string;
+    lastName?: string;
+    companyId: string;
+  }) {
     const hashedPassword = await this.hashPassword(data.password);
 
     return this.prisma.user.create({

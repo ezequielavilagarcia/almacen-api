@@ -21,19 +21,115 @@ datasource db {
 /// Model representing a user in the system
 model User {
   /// Unique identifier for the user
-  id        String   @id @default(uuid())
+  id        String   @id @default(uuid()) @db.Uuid
   /// User's email address (unique)
-  email     String   @unique
+  email     String   @unique @db.VarChar(50)
   /// User's password (not shown in queries)
-  password  String   
-  /// User's first name
-  firstName String?
-  /// User's last name
-  lastName  String?
+  password  String
+  /// User's first name (can be null)
+  firstName String?  @db.VarChar(50)
+  /// User's last name (can be null)
+  lastName  String?  @db.VarChar(50)
   /// Indicates if the user is active
   isActive  Boolean  @default(true)
   /// Date when the user was created
   createdAt DateTime @default(now())
   /// Date when the user was last updated
   updatedAt DateTime @updatedAt
+  /// User's sales
+  Sales     Sale[]
+  /// User's company
+  Company   Company  @relation(fields: [companyId], references: [id])
+  companyId String   @db.Uuid
+}
+
+/// Model representing a company in the system
+model Company {
+  /// Unique identifier for the company
+  id           String         @id @default(uuid()) @db.Uuid
+  /// Company's name
+  name         String         @db.VarChar(50)
+  /// Company's address
+  address      String         @db.VarChar(50)
+  /// Company's email address (can be null)
+  email        String?        @db.VarChar(50)
+  /// Company's phone number (can be null)
+  phoneNumber  Int?           @db.Integer
+  /// Company's users
+  Users        User[]
+  /// Price for each product 
+  ProductPrice ProductPrice[]
+}
+
+/// Model representing a product in the system
+model Product {
+  /// Unique identifier for the product
+  id           String        @id @default(uuid()) @db.Uuid
+  /// Product's name (unique)
+  name         String        @unique @db.VarChar(50)
+  /// Product's code (can be null)
+  code         String?       @db.VarChar(20)
+  /// Join table between product and sale
+  ProductSale  ProductSale[]
+  /// Product's price
+  ProductPrice ProductPrice?
+  Category     Category      @relation(fields: [categoryId], references: [id])
+  categoryId   String        @db.Uuid
+}
+
+/// Model representing a product price in the system
+model ProductPrice {
+  /// Unique identifier for the product price
+  id            String  @id @default(uuid()) @db.Uuid
+  /// Product's purchase price
+  purchasePrice Float   @db.DoublePrecision
+  /// Product's sale price
+  salePrice     Float   @db.DoublePrecision
+  /// Product relation
+  Product       Product @relation(fields: [productId], references: [id])
+  productId     String  @unique @db.Uuid
+  /// Product price company
+  Company       Company @relation(fields: [companyId], references: [id])
+  companyId     String  @db.Uuid
+}
+
+/// Model representing a sale in the system
+model Sale {
+  /// Unique identifier for the sale
+  id          String        @id @default(uuid()) @db.Uuid
+  /// Date when the sale was created
+  createdAt   DateTime      @default(now())
+  /// Total sale
+  total       Float         @db.DoublePrecision
+  /// Sale's user
+  User        User          @relation(fields: [userId], references: [id])
+  userId      String        @db.Uuid
+  /// Join table between product and sale
+  ProductSale ProductSale[]
+}
+
+/// Model representing a product sale in the system
+model ProductSale {
+  /// Product's total amount
+  amount    Float   @db.DoublePrecision
+  /// Product's price
+  price     Float   @db.DoublePrecision
+  /// Product relation
+  productId String  @db.Uuid
+  /// Sale relation
+  saleId    String  @db.Uuid
+  Product   Product @relation(fields: [productId], references: [id])
+  Sale      Sale    @relation(fields: [saleId], references: [id])
+
+  @@id([productId, saleId])
+}
+
+/// Model representing a category in the system
+model Category {
+  /// Unique identifier for the category
+  id       String    @id @default(uuid()) @db.Uuid
+  /// Category's description
+  category String    @db.VarChar(50)
+  /// Category's product
+  Product  Product[]
 }
