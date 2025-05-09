@@ -1,23 +1,22 @@
-import { NotFoundException, UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Parent, ResolveField, Resolver } from '@nestjs/graphql';
+import { Company } from '../../@generated/company/company.model';
 import { User } from '../../@generated/user/user.model';
-import { GqlAuthGuard } from '../../auth/guards/gql-auth.guard';
+import { CreateUserInput } from '../dtos/create-user.input';
+import { CompanyService } from '../services/company.service';
 import { UserService } from '../services/user.service';
-import { CreateUserInput } from './dto/create-user.input';
 
 @Resolver(() => User)
 export class UserResolver {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private companyService: CompanyService,
+  ) {}
 
-  @Query(() => User)
-  @UseGuards(GqlAuthGuard)
-  async user(@Args('id') id: string): Promise<User> {
-    const user = await this.userService.findById(id);
+  @ResolveField('Company', () => Company)
+  async getCompany(@Parent() user: User): Promise<Company> {
+    const companyId = user.companyId;
 
-    if (user == null) {
-      throw new NotFoundException('User not found');
-    }
-    return user;
+    return this.companyService.findById(companyId);
   }
 
   @Mutation(() => User)
