@@ -4,10 +4,22 @@ This document explains how to set up and run the project in your local developme
 
 ## Prerequisites
 
-- Node.js (LTS version recommended)
+- Node.js v22.15.0 (recommended to use nvm to manage the version)
 - Yarn
 - Docker and Docker Compose
 - Git
+
+### Node Version Manager (nvm)
+
+This project uses an `.nvmrc` file to specify the exact Node.js version required. If you have nvm installed, simply run:
+
+```bash
+nvm use
+```
+
+This will automatically switch to the Node.js version specified in the `.nvmrc` file (v22.15.0).
+
+If you don't have nvm installed, you can install it by following the instructions at [https://github.com/nvm-sh/nvm](https://github.com/nvm-sh/nvm).
 
 ## Steps to Start the Local Environment
 
