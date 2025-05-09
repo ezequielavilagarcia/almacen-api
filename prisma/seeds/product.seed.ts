@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
-export async function seedProducts(prisma: PrismaClient) {
+export async function seedProducts(prisma: PrismaClient, categoryId: string) {
   console.log('🌱 Seeding products...');
 
   // Delete all existing products first to avoid duplicates
@@ -11,6 +11,7 @@ export async function seedProducts(prisma: PrismaClient) {
     data: {
       name: 'Example',
       code: 'E001',
+      categoryId,
     },
   });
 

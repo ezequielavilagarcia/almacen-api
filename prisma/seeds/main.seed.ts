@@ -14,8 +14,8 @@ async function main() {
   // Run seeds in sequence
   const company = await seedCompanies(prisma);
   const users = await seedUsers(prisma, company.id);
-  const product = await seedProducts(prisma);
-  await seedCategories(prisma, product.id);
+  const category = await seedCategories(prisma);
+  const product = await seedProducts(prisma, category.id);
   const productPrice = await seedProductPrices(prisma, product.id, company.id);
   await seedSales(prisma, users.id, product.id, 3, productPrice.salePrice);
 

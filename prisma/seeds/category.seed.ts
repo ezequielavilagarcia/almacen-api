@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
-export async function seedCategories(prisma: PrismaClient, productId: string) {
+export async function seedCategories(prisma: PrismaClient) {
   console.log('🌱 Seeding categories...');
 
   // Delete all existing categories first to avoid duplicates
@@ -10,7 +10,6 @@ export async function seedCategories(prisma: PrismaClient, productId: string) {
   const exampleCategory = await prisma.category.create({
     data: {
       category: 'FOOD',
-      Product: { connect: { id: productId } },
     },
   });
 
