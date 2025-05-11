@@ -10,6 +10,7 @@ import { CoreModule } from './core/core.module';
 import { CommonModule } from './common/common.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { UserModule } from './user/user.module';
     CommonModule,
     AuthModule,
     UserModule,
+    ProductModule,
   ],
 })
 export class AppModule {}
