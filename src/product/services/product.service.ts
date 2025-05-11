@@ -7,8 +7,8 @@ import { CreateProductInput } from '../dtos/create-product.input';
 export class ProductService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createProductInput: CreateProductInput) {
-    const { name, categoryId, purchasePrice, salePrice, companyId } = createProductInput;
+  async create(createProductInput: CreateProductInput, companyId: string) {
+    const { name, categoryId, purchasePrice, salePrice } = createProductInput;
     return this.prisma.product.create({
       data: {
         name,

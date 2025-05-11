@@ -25,8 +25,13 @@ export class ProductResolver {
   }
 
   @Mutation(() => Product)
-  async createProduct(@Args('createProductInput') createProductInput: CreateProductInput) {
-    return this.productService.create(createProductInput);
+  @UseGuards(GqlAuthGuard)
+  async createProduct(
+    @Args('createProductInput') createProductInput: CreateProductInput,
+    @CurrentUser() user: User,
+  ) {
+    const companyId = user.companyId;
+    return this.productService.create(createProductInput, companyId);
   }
 
   @ResolveField(() => PriceBreakdown)

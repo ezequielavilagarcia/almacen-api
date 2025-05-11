@@ -24,8 +24,4 @@ export class CreateProductInput {
   @Field()
   @IsUUID()
   categoryId: string;
-
-  @Field()
-  @IsUUID()
-  companyId: string;
 }
