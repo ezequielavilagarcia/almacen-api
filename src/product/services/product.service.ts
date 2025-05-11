@@ -1,14 +1,23 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../core/services/prisma.service';
-import { CreateProductInput } from '../dtos/create-product.input';
 import { Product } from '@prisma/client';
+import { CreateProductInput } from '../dtos/create-product.input';
 
 @Injectable()
 export class ProductService {
   constructor(private prisma: PrismaService) {}
 
-  async create(data: CreateProductInput) {
-    return this.prisma.product.create({ data });
+  async create(createProductInput: CreateProductInput) {
+    const { name, categoryId, purchasePrice, salePrice, companyId } = createProductInput;
+    return this.prisma.product.create({
+      data: {
+        name,
+        Category: { connect: { id: categoryId } },
+        PriceBreakdown: {
+          create: { purchasePrice, salePrice, Company: { connect: { id: companyId } } },
+        },
+      },
+    });
   }
 
   async findAll(): Promise<Product[] | null> {

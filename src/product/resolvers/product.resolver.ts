@@ -25,8 +25,8 @@ export class ProductResolver {
   }
 
   @Mutation(() => Product)
-  async createProduct(@Args('createProductInput') input: CreateProductInput) {
-    return this.productService.create(input);
+  async createProduct(@Args('createProductInput') createProductInput: CreateProductInput) {
+    return this.productService.create(createProductInput);
   }
 
   @ResolveField(() => PriceBreakdown)
