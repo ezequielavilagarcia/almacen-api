@@ -3,7 +3,7 @@ import { seedUsers } from './user.seed';
 import { seedCompanies } from './company.seed';
 import { seedProducts } from './product.seed';
 import { seedSales } from './sale.seed';
-import { seedProductPrices } from './product-price.seed';
+import { seedPriceBreakdown } from './price-breakdown';
 import { seedCategories } from './category.seed';
 
 const prisma = new PrismaClient();
@@ -16,7 +16,7 @@ async function main() {
   const users = await seedUsers(prisma, company.id);
   const category = await seedCategories(prisma);
   const product = await seedProducts(prisma, category.id);
-  const productPrice = await seedProductPrices(prisma, product.id, company.id);
+  const productPrice = await seedPriceBreakdown(prisma, product.id, company.id);
   await seedSales(prisma, users.id, product.id, 3, productPrice.salePrice);
 
   console.log('✅ Database seeding completed successfully');

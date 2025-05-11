@@ -46,39 +46,39 @@ model User {
 /// Model representing a company in the system
 model Company {
   /// Unique identifier for the company
-  id           String         @id @default(uuid()) @db.Uuid
+  id             String           @id @default(uuid()) @db.Uuid
   /// Company's name
-  name         String         @db.VarChar(50)
+  name           String           @db.VarChar(50)
   /// Company's address
-  address      String         @db.VarChar(50)
+  address        String           @db.VarChar(50)
   /// Company's email address (can be null)
-  email        String?        @db.VarChar(50)
+  email          String?          @db.VarChar(50)
   /// Company's phone number (can be null)
-  phoneNumber  Int?           @db.Integer
+  phoneNumber    Int?             @db.Integer
   /// Company's users
-  Users        User[]
+  Users          User[]
   /// Price for each product 
-  ProductPrice ProductPrice[]
+  PriceBreakdown PriceBreakdown[]
 }
 
 /// Model representing a product in the system
 model Product {
   /// Unique identifier for the product
-  id           String        @id @default(uuid()) @db.Uuid
+  id             String          @id @default(uuid()) @db.Uuid
   /// Product's name (unique)
-  name         String        @unique @db.VarChar(50)
+  name           String          @unique @db.VarChar(50)
   /// Product's code (can be null)
-  code         String?       @db.VarChar(20)
+  code           String?         @db.VarChar(20)
   /// Join table between product and sale
-  ProductSale  ProductSale[]
+  ProductSale    ProductSale[]
   /// Product's price
-  ProductPrice ProductPrice?
-  Category     Category      @relation(fields: [categoryId], references: [id])
-  categoryId   String        @db.Uuid
+  PriceBreakdown PriceBreakdown?
+  Category       Category        @relation(fields: [categoryId], references: [id])
+  categoryId     String          @db.Uuid
 }
 
-/// Model representing a product price in the system
-model ProductPrice {
+/// Model representing a price breakdown in the system
+model PriceBreakdown {
   /// Unique identifier for the product price
   id            String  @id @default(uuid()) @db.Uuid
   /// Product's purchase price

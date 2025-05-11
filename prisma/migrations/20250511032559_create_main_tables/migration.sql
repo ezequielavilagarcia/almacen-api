@@ -35,14 +35,14 @@ CREATE TABLE "Product" (
 );
 
 -- CreateTable
-CREATE TABLE "ProductPrice" (
+CREATE TABLE "PriceBreakdown" (
     "id" UUID NOT NULL,
     "purchasePrice" DOUBLE PRECISION NOT NULL,
     "salePrice" DOUBLE PRECISION NOT NULL,
     "productId" UUID NOT NULL,
     "companyId" UUID NOT NULL,
 
-    CONSTRAINT "ProductPrice_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "PriceBreakdown_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -80,7 +80,7 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE UNIQUE INDEX "Product_name_key" ON "Product"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "ProductPrice_productId_key" ON "ProductPrice"("productId");
+CREATE UNIQUE INDEX "PriceBreakdown_productId_key" ON "PriceBreakdown"("productId");
 
 -- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -89,10 +89,10 @@ ALTER TABLE "User" ADD CONSTRAINT "User_companyId_fkey" FOREIGN KEY ("companyId"
 ALTER TABLE "Product" ADD CONSTRAINT "Product_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ProductPrice" ADD CONSTRAINT "ProductPrice_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "PriceBreakdown" ADD CONSTRAINT "PriceBreakdown_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ProductPrice" ADD CONSTRAINT "ProductPrice_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "PriceBreakdown" ADD CONSTRAINT "PriceBreakdown_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Sale" ADD CONSTRAINT "Sale_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

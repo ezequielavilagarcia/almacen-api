@@ -28,7 +28,7 @@ export class ProductService {
 
   async getPriceForProductAndCompany(productId: string, companyId: string) {
     try {
-      return this.prisma.productPrice.findFirstOrThrow({
+      return this.prisma.priceBreakdown.findFirstOrThrow({
         where: {
           productId,
           companyId,
