@@ -13,7 +13,7 @@ export class ProductService {
       data: {
         name,
         Category: { connect: { id: categoryId } },
-        PriceBreakdown: {
+        ProductPrice: {
           create: { purchasePrice, salePrice, Company: { connect: { id: companyId } } },
         },
       },
@@ -37,7 +37,7 @@ export class ProductService {
 
   async getPriceForProductAndCompany(productId: string, companyId: string) {
     try {
-      return this.prisma.priceBreakdown.findFirstOrThrow({
+      return this.prisma.productPrice.findFirstOrThrow({
         where: {
           productId,
           companyId,

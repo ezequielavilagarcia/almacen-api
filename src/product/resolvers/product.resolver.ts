@@ -6,7 +6,7 @@ import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { User } from '@prisma/client';
-import { PriceBreakdown } from 'src/@generated/price-breakdown/price-breakdown.model';
+import { ProductPrice } from 'src/@generated/product-price/product-price.model';
 
 @Resolver(() => Product)
 export class ProductResolver {
@@ -34,11 +34,8 @@ export class ProductResolver {
     return this.productService.create(createProductInput, companyId);
   }
 
-  @ResolveField('PriceBreakdown', () => PriceBreakdown)
-  async priceBreakdown(
-    @Parent() product: Product,
-    @CurrentUser() user: User,
-  ): Promise<PriceBreakdown> {
+  @ResolveField('PriceBreakdown', () => ProductPrice)
+  async productPrice(@Parent() product: Product, @CurrentUser() user: User): Promise<ProductPrice> {
     const companyId = user.companyId;
 
     return this.productService.getPriceForProductAndCompany(product.id, companyId);
