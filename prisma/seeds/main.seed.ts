@@ -3,8 +3,8 @@ import { seedUsers } from './user.seed';
 import { seedCompanies } from './company.seed';
 import { seedProducts } from './product.seed';
 import { seedSales } from './sale.seed';
-import { seedProductPrices } from './product-price';
 import { seedCategories } from './category.seed';
+import { seedProductPrices } from './product-price.seed';
 
 const prisma = new PrismaClient();
 
