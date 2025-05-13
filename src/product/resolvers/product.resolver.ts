@@ -34,11 +34,11 @@ export class ProductResolver {
     return this.productService.create(createProductInput, companyId);
   }
 
-  @ResolveField(() => PriceBreakdown)
+  @ResolveField('PriceBreakdown', () => PriceBreakdown)
   async priceBreakdown(
     @Parent() product: Product,
     @CurrentUser() user: User,
-  ): Promise<PriceBreakdown | null> {
+  ): Promise<PriceBreakdown> {
     const companyId = user.companyId;
 
     return this.productService.getPriceForProductAndCompany(product.id, companyId);

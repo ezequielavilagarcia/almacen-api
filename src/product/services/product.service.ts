@@ -20,11 +20,11 @@ export class ProductService {
     });
   }
 
-  async findAll(): Promise<Product[] | null> {
+  async findAll(): Promise<Product[]> {
     return this.prisma.product.findMany();
   }
 
-  async findOne(id: string): Promise<Product | null> {
+  async findOne(id: string): Promise<Product> {
     try {
       return this.prisma.product.findFirstOrThrow({
         where: { id },
