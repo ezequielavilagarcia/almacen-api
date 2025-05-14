@@ -20,7 +20,7 @@ export async function seedProductPrices(
     },
   });
 
-  console.log(`✅ Created example product price with ID: ${exampleProductPrice.id}`);
+  console.log(`✅ Created product price with ID: ${exampleProductPrice.id}`);
 
   console.log('✅ Product price seeding completed');
 
