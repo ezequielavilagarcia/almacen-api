@@ -10,7 +10,6 @@ export async function seedProducts(prisma: PrismaClient, categoryId: string) {
   const exampleProduct = await prisma.product.create({
     data: {
       name: 'Example',
-      code: 'E001',
       categoryId,
     },
   });
