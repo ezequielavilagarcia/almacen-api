@@ -69,34 +69,36 @@ model Company {
 /// Model representing a product in the system
 model Product {
   /// Unique identifier for the product
-  id           String        @id @default(uuid()) @db.Uuid
+  id              String        @id @default(uuid()) @db.Uuid
   /// Product's name (unique)
-  name         String        @unique @db.VarChar(50)
-  /// Product's unit type
-  unitType     UnitType      @default(KILOGRAM)
+  name            String        @unique @db.VarChar(50)
+  /// Product's default unit type
+  DefaultUnitType UnitType      @default(UNIT)
   /// Join table between product and sale
-  ProductSale  ProductSale[]
+  ProductSale     ProductSale[]
   /// Product's price
-  ProductPrice ProductPrice?
-  Category     Category      @relation(fields: [categoryId], references: [id])
-  categoryId   String        @db.Uuid
-  ProductCode  ProductCode[]
+  ProductPrice    ProductPrice?
+  Category        Category      @relation(fields: [categoryId], references: [id])
+  categoryId      String        @db.Uuid
+  ProductCode     ProductCode[]
 }
 
 /// Model representing a product price in the system
 model ProductPrice {
   /// Unique identifier for the product price
-  id            String  @id @default(uuid()) @db.Uuid
+  id            String   @id @default(uuid()) @db.Uuid
   /// Product's purchase price
-  purchasePrice Float   @db.DoublePrecision
+  purchasePrice Float    @db.DoublePrecision
   /// Product's sale price
-  salePrice     Float   @db.DoublePrecision
+  salePrice     Float    @db.DoublePrecision
+  /// Product's unit type
+  unitType      UnitType @default(UNIT)
   /// Product relation
-  Product       Product @relation(fields: [productId], references: [id])
-  productId     String  @unique @db.Uuid
+  Product       Product  @relation(fields: [productId], references: [id])
+  productId     String   @unique @db.Uuid
   /// Product price company
-  Company       Company @relation(fields: [companyId], references: [id])
-  companyId     String  @db.Uuid
+  Company       Company  @relation(fields: [companyId], references: [id])
+  companyId     String   @db.Uuid
 }
 
 /// Model representing a sale in the system
@@ -144,7 +146,8 @@ model Category {
 model ProductCode {
   /// Unique identifier for the product code
   id        String  @id @default(uuid()) @db.Uuid
-  code      String  @db.VarChar(48)
+  /// Product´s code
+  code      String  @unique @db.VarChar(48)
   Product   Product @relation(fields: [productId], references: [id])
   productId String  @db.Uuid
 }

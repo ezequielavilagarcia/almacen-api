@@ -6,16 +6,22 @@ export async function seedCategories(prisma: PrismaClient) {
   // Delete all existing categories first to avoid duplicates
   await prisma.category.deleteMany({});
 
-  // Create category
-  const exampleCategory = await prisma.category.create({
-    data: {
-      category: 'FOOD',
-    },
-  });
+  const categoryData = [
+    { name: 'Bakery' },
+    { name: 'Butchery' },
+    { name: 'Groceries' },
+    { name: 'Snacks' },
+    { name: 'Sweets' },
+  ];
 
-  console.log(`✅ Created example category with ID: ${exampleCategory.id}`);
+  // Create categories
+  const categories = await Promise.all(
+    categoryData.map(data => prisma.category.create({ data: { category: data.name } })),
+  );
+
+  console.log(`✅ Created ${categories.length} categories`);
 
   console.log('✅ Category seeding completed');
 
-  return exampleCategory;
+  return categories;
 }

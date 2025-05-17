@@ -15,11 +15,11 @@ async function main() {
   // Run seeds in sequence
   const company = await seedCompanies(prisma);
   const users = await seedUsers(prisma, company.id);
-  const category = await seedCategories(prisma);
-  const product = await seedProducts(prisma, category.id);
-  const productPrice = await seedProductPrices(prisma, product.id, company.id);
-  await seedSales(prisma, users.id, product.id, 3, productPrice.salePrice);
-  await seedProductCodes(prisma, product.id);
+  const categories = await seedCategories(prisma);
+  const products = await seedProducts(prisma, categories);
+  await seedProductPrices(prisma, products, company.id);
+  await seedSales(prisma, users.id);
+  await seedProductCodes(prisma, products);
 
   console.log('✅ Database seeding completed successfully');
 }
