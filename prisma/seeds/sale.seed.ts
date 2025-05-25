@@ -1,42 +1,39 @@
 import { PrismaClient } from '@prisma/client';
 
-export async function seedSales(
-  prisma: PrismaClient,
-  userId: string,
-  productId: string,
-  productAmount: number,
-  productSalePrice: number,
-) {
+export async function seedSales(prisma: PrismaClient, userId: string) {
   console.log('🌱 Seeding sales...');
 
-  const totalSale = productAmount * productSalePrice;
+  const amountData = [2, 3, 5, 7, 11];
+
+  const products = await prisma.product.findMany({ include: { ProductPrice: true } });
 
   // Delete all existing sales first to avoid duplicates
   await prisma.sale.deleteMany({});
 
   // Create sale
-  const exampleSale = await prisma.sale.create({
-    data: {
-      // Sum of the amount of all products sold and their selling price
-      total: totalSale,
-      User: {
-        connect: {
-          id: userId,
+  const exampleSales = await Promise.all(
+    products.map((product, index) =>
+      prisma.sale.create({
+        data: {
+          total: amountData[index] * product.ProductPrice!.salePrice,
+          User: {
+            connect: {
+              id: userId,
+            },
+          },
+          ProductSale: {
+            create: {
+              amount: amountData[index],
+              price: product.ProductPrice!.salePrice,
+              productId: product.id,
+            },
+          },
         },
-      },
-      ProductSale: {
-        create: {
-          amount: productAmount,
-          price: productSalePrice,
-          Product: { connect: { id: productId } },
-        },
-      },
-    },
-  });
+      }),
+    ),
+  );
 
-  console.log(`✅ Created example sale with ID: ${exampleSale.id}`);
+  console.log(`✅ Created ${exampleSales.length} example sales`);
 
   console.log('✅ Sale seeding completed');
-
-  return exampleSale;
 }
